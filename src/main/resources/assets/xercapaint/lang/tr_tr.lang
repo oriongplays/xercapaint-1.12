@@ -1,0 +1,11 @@
+itemGroup.paint_tab=Resim
+
+item.item_palette.name=Palet
+item.item_canvas.name=Tuval
+item.item_canvas_large.name=Büyük Tuval
+item.item_canvas_long.name=Geniş Tuval
+item.item_canvas_tall.name=Uzun Tuval
+
+palette.basic_count=%1$s temel renk
+palette.custom_count=%1$s özel renk
+palette.empty=Boş palet

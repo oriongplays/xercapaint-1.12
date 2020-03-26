@@ -1,0 +1,16 @@
+[
+{
+  "modid": "xercapaint",
+  "name": "Joy of Painting",
+  "description": "This mod lets you craft a blank canvas and a palette, with which you can paint your own pictures and hang them on a wall like the vanilla paintings.\n\nLet your creativity roam free or paint memes and experience the joy of painting.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "https://ercanserteli.com/joy-of-painting/",
+  "updateUrl": "",
+  "authorList": ["xerca"],
+  "credits": "",
+  "logoFile": "logo.png",
+  "screenshots": [],
+  "dependencies": []
+}
+]
