@@ -8,6 +8,8 @@ import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.LWJGLUtil;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import xerca.xercapaint.common.CanvasType;
 import xerca.xercapaint.common.PaletteUtil;
@@ -275,18 +277,20 @@ public class GuiCanvasEdit extends BasePalette {
         }
     }
 
+    public static boolean isKeyComboCtrlZ(int keyID)
+    {
+        return keyID == Keyboard.KEY_Z && isCtrlKeyDown() && !isShiftKeyDown() && !isAltKeyDown();
+    }
+
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
-//        if(keyCode == GLFW.GLFW_KEY_Z && (modifiers & GLFW.GLFW_MOD_CONTROL) == GLFW.GLFW_MOD_CONTROL){
-//            if(undoStack.size() > 0){
-//                pixels = undoStack.pop();
-//            }
-//            return true;
-//        }
-//        else{
-//            return super.keyPressed(keyCode, scanCode, modifiers);
-//        }
         super.keyTyped(typedChar, keyCode);
+
+        if(isKeyComboCtrlZ(keyCode)){
+            if(undoStack.size() > 0){
+                pixels = undoStack.pop();
+            }
+        }
     }
 
     @Override

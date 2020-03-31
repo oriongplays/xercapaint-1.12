@@ -29,23 +29,25 @@ public class ClientProxy extends Proxy {
         final ItemStack heldItem = player.getHeldItemMainhand();
         final ItemStack offhandItem = player.getHeldItemOffhand();
 
-        if(heldItem.isEmpty()){
+        Minecraft minecraft = Minecraft.getMinecraft();
+
+        if(heldItem.isEmpty() || !minecraft.player.getGameProfile().getId().equals(player.getGameProfile().getId())){
             return;
         }
 
         if(heldItem.getItem() instanceof ItemCanvas){
             if(offhandItem.isEmpty()){
-                Minecraft.getMinecraft().displayGuiScreen(new GuiCanvasView(heldItem.getTagCompound(), new TextComponentTranslation("item.item_canvas.name"), ((ItemCanvas)heldItem.getItem()).getCanvasType()));
+                minecraft.displayGuiScreen(new GuiCanvasView(heldItem.getTagCompound(), new TextComponentTranslation("item.item_canvas.name"), ((ItemCanvas)heldItem.getItem()).getCanvasType()));
             }else if(offhandItem.getItem() instanceof ItemPalette){
-                Minecraft.getMinecraft().displayGuiScreen(new GuiCanvasEdit(Minecraft.getMinecraft().player,
+                minecraft.displayGuiScreen(new GuiCanvasEdit(minecraft.player,
                         heldItem.getTagCompound(), offhandItem.getTagCompound(), new TextComponentTranslation("item.item_canvas.name"), ((ItemCanvas)heldItem.getItem()).getCanvasType()));
             }
         }
         else if(heldItem.getItem() instanceof ItemPalette){
             if(offhandItem.isEmpty()){
-                Minecraft.getMinecraft().displayGuiScreen(new GuiPalette(heldItem.getTagCompound(), new TextComponentTranslation("item.item_palette.name")));
+                minecraft.displayGuiScreen(new GuiPalette(heldItem.getTagCompound(), new TextComponentTranslation("item.item_palette.name")));
             }else if(offhandItem.getItem() instanceof ItemCanvas){
-                Minecraft.getMinecraft().displayGuiScreen(new GuiCanvasEdit(Minecraft.getMinecraft().player,
+                minecraft.displayGuiScreen(new GuiCanvasEdit(minecraft.player,
                         offhandItem.getTagCompound(), heldItem.getTagCompound(), new TextComponentTranslation("item.item_canvas.name"), ((ItemCanvas)offhandItem.getItem()).getCanvasType()));
             }
         }
