@@ -5,6 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import xerca.xercapaint.common.XercaPaint;
+import xerca.xercapaint.common.entity.EntityTransparentCanvas;
 
 
 @GameRegistry.ObjectHolder(XercaPaint.MODID)
@@ -18,7 +19,8 @@ public class Entities {
     }
 
     public static void init() {
-        registerEntity(EntityCanvas.class, "canvas", 10, 2147483647, false);
+        registerEntity(EntityCanvas.class, "canvas", 64, 2147483647, false);
+        registerEntity(EntityTransparentCanvas.class, "transparent_canvas", 64, 2147483647, false);
     }
 
 }

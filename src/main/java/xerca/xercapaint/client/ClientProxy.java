@@ -13,9 +13,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import xerca.xercapaint.common.Proxy;
 import xerca.xercapaint.common.XercaPaint;
 import xerca.xercapaint.common.entity.EntityCanvas;
+import xerca.xercapaint.common.entity.EntityTransparentCanvas;
 import xerca.xercapaint.common.item.ItemCanvas;
 import xerca.xercapaint.common.item.ItemPalette;
+import xerca.xercapaint.common.item.ItemSprayPalette;
 import xerca.xercapaint.common.item.Items;
+import xerca.xercapaint.common.CanvasType;
 
 public class ClientProxy extends Proxy {
     private static CanvasRenderer canvasRenderer;
@@ -51,16 +54,29 @@ public class ClientProxy extends Proxy {
                         offhandItem.getTagCompound(), heldItem.getTagCompound(), new TextComponentTranslation("item.item_canvas.name"), ((ItemCanvas)offhandItem.getItem()).getCanvasType()));
             }
         }
+                else if(heldItem.getItem() instanceof ItemSprayPalette){
+            if(offhandItem.isEmpty()){
+                minecraft.displayGuiScreen(new GuiSprayPalette(heldItem.getTagCompound(), new TextComponentTranslation("item.item_spray_palette.name")));
+            }
+        }
     }
 
     @Override
     public void preInit() {
         RenderingRegistry.registerEntityRenderingHandler(EntityCanvas.class, new RenderEntityCanvas.RenderEntityCanvasFactory());
+        RenderingRegistry.registerEntityRenderingHandler(EntityTransparentCanvas.class, new RenderTransparentCanvas.Factory());
     }
 
     @Override
     public void init() {
 
+    }
+    
+    @Override
+    public void showSprayGui(EntityPlayer player, NBTTagCompound canvasTag, NBTTagCompound paletteTag) {
+        Minecraft minecraft = Minecraft.getMinecraft();
+        minecraft.displayGuiScreen(new GuiSprayCanvasEdit(minecraft.player, canvasTag, paletteTag,
+                new TextComponentTranslation("item.item_canvas.name"), CanvasType.SMALL));
     }
 
     @Override

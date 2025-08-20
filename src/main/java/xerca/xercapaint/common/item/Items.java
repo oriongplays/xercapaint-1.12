@@ -19,6 +19,9 @@ public final class Items {
     public static final ItemCanvas ITEM_CANVAS_LARGE = null;
     public static final ItemCanvas ITEM_CANVAS_LONG = null;
     public static final ItemCanvas ITEM_CANVAS_TALL = null;
+    public static final ItemSprayCan ITEM_SPRAY_CAN = null;
+    public static final ItemSprayPalette ITEM_SPRAY_PALETTE = null;
+    public static final ItemSolvent ITEM_SOLVENT = null;
 
     public static PaintCreativeTab paintTab;
 
@@ -50,7 +53,10 @@ public final class Items {
                     new ItemCanvas("item_canvas", CanvasType.SMALL),
                     new ItemCanvas("item_canvas_large", CanvasType.LARGE),
                     new ItemCanvas("item_canvas_long", CanvasType.LONG),
-                    new ItemCanvas("item_canvas_tall", CanvasType.TALL)
+                    new ItemCanvas("item_canvas_tall", CanvasType.TALL),
+                    new ItemSprayCan("item_spray_can"),
+                    new ItemSprayPalette("item_spray_palette"),
+                    new ItemSolvent("item_solvent")
             );
         }
 

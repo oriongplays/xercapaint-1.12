@@ -5,6 +5,9 @@ item.item_canvas.name=Canvas
 item.item_canvas_large.name=Large Canvas
 item.item_canvas_long.name=Long Canvas
 item.item_canvas_tall.name=Tall Canvas
+item.item_spray_can.name=Spray Can
+item.item_spray_palette.name=Spray Palette
+item.item_solvent.name=Solvent
 
 palette.basic_count=%1$s basic colors
 palette.custom_count=%1$s custom colors

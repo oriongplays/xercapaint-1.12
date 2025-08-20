@@ -7,6 +7,7 @@ public abstract class Proxy {
     public abstract void init();
     public abstract void updateCanvas(NBTTagCompound data);
     public abstract void showCanvasGui(EntityPlayer player);
+    public abstract void showSprayGui(EntityPlayer player, NBTTagCompound canvasTag, NBTTagCompound paletteTag);
 
     public abstract void preInit();
 

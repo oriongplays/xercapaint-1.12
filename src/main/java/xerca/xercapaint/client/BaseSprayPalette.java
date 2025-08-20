@@ -14,9 +14,9 @@ import java.io.IOException;
 
 import static xerca.xercapaint.common.PaletteUtil.readCustomColorArrayFromNBT;
 
-public abstract class BasePalette extends GuiScreen {
-    protected static final ResourceLocation noteGuiTextures = new ResourceLocation(XercaPaint.MODID, "textures/gui/palette.png");
-    
+public abstract class BaseSprayPalette extends GuiScreen {
+    protected static final ResourceLocation noteGuiTextures = new ResourceLocation(XercaPaint.MODID, "textures/gui/spray_palette.png");
+
     /**
      * Allows derived palette GUIs to supply an alternative background texture
      * while keeping all interaction points the same.
@@ -99,7 +99,7 @@ public abstract class BasePalette extends GuiScreen {
     PaletteUtil.CustomColor[] customColors;
     boolean[] basicColorFlags;
 
-    BasePalette(ITextComponent titleIn, NBTTagCompound paletteTag) {
+    BaseSprayPalette(ITextComponent titleIn, NBTTagCompound paletteTag) {
         super();
         this.customColors = new PaletteUtil.CustomColor[12];
         this.basicColorFlags = new boolean[16];

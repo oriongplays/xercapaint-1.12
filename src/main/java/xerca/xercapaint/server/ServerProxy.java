@@ -22,6 +22,11 @@ public class ServerProxy extends Proxy {
     }
 
     @Override
+    public void showSprayGui(EntityPlayer player, NBTTagCompound canvasTag, NBTTagCompound paletteTag) {
+
+    }
+
+    @Override
     public void preInit() {
 
     }

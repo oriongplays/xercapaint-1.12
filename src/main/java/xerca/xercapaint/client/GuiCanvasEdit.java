@@ -46,7 +46,9 @@ public class GuiCanvasEdit extends BasePalette {
     private String canvasTitle = "";
     private String name = "";
     private int version = 0;
-
+    /** Reference to the canvas tag being edited so we can update it locally. */
+    private final NBTTagCompound canvasTag;
+    
     private static final Vec2f[] outlinePoss1 = {
             new Vec2f(0.f, 199.0f),
             new Vec2f(12.f, 199.0f),
@@ -80,6 +82,7 @@ public class GuiCanvasEdit extends BasePalette {
         }
 
         this.editingPlayer = player;
+        this.canvasTag = canvasTag;
         if (canvasTag != null && !canvasTag.hasNoTags()) {
             int[] nbtPixels = canvasTag.getIntArray("pixels");
             this.authorName = canvasTag.getString("author");
@@ -94,7 +97,11 @@ public class GuiCanvasEdit extends BasePalette {
 
         if (this.pixels == null) {
             this.pixels = new int[canvasPixelArea];
-            Arrays.fill(this.pixels, basicColors[15].rgbVal());
+            int fillColor = basicColors[15].rgbVal();
+            if (canvasTag != null && canvasTag.getBoolean("transparent")) {
+                fillColor = 0x00000000;
+            }
+            Arrays.fill(this.pixels, fillColor);
 
             long secs = System.currentTimeMillis()/1000;
             this.name = "" + player.getUniqueID().toString() + "_" + secs;
@@ -201,6 +208,19 @@ public class GuiCanvasEdit extends BasePalette {
                 int x = canvasX + j* canvasPixelScale;
                 drawRect(x, y, x + canvasPixelScale, y + canvasPixelScale, getPixelAt(j, i));
             }
+        }
+
+        // Outline transparent canvas area for visibility
+        if (canvasTag != null && canvasTag.getBoolean("transparent")) {
+            int x1 = canvasX - 1;
+            int y1 = canvasY - 1;
+            int x2 = canvasX + canvasWidth;
+            int y2 = canvasY + canvasHeight;
+            int borderColor = 0xFFFFFFFF; // opaque white
+            drawRect(x1, y1, x2 + 1, y1 + 1, borderColor);
+            drawRect(x1, y2, x2 + 1, y2 + 1, borderColor);
+            drawRect(x1, y1, x1 + 1, y2 + 1, borderColor);
+            drawRect(x2, y1, x2 + 1, y2 + 1, borderColor);
         }
 
         // Draw brush meter
@@ -363,6 +383,15 @@ public class GuiCanvasEdit extends BasePalette {
             version ++;
             CanvasUpdatePacket pack = new CanvasUpdatePacket(pixels, isSigned, canvasTitle, name, version, customColors, canvasType);
             XercaPaint.network.sendToServer(pack);
+            if (canvasTag != null) {
+                canvasTag.setIntArray("pixels", Arrays.copyOf(pixels, pixels.length));
+                canvasTag.setString("name", name);
+                canvasTag.setInteger("v", version);
+                if (isSigned) {
+                    canvasTag.setString("author", authorName);
+                    canvasTag.setString("title", canvasTitle.trim());
+                }
+            }
         }
     }
 
