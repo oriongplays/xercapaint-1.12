@@ -17,12 +17,27 @@ import javax.annotation.Nullable;
 
 public class EntityTransparentCanvas extends EntityCanvas {
     private boolean vulnerable = false;
+    private static final double OFFSET = -0.9D / 16D;
     public EntityTransparentCanvas(World world, NBTTagCompound tag, BlockPos pos, EnumFacing facing) {
         super(world, tag, pos, facing, CanvasType.SMALL);
     }
 
     public EntityTransparentCanvas(World world) {
         super(world);
+    }
+
+    @Override
+    protected void updateFacingWithBoundingBox(EnumFacing facing) {
+        super.updateFacingWithBoundingBox(facing);
+        double dx = facing.getFrontOffsetX() * OFFSET;
+        double dy = facing.getFrontOffsetY() * OFFSET;
+        double dz = facing.getFrontOffsetZ() * OFFSET;
+        this.posX += dx;
+        this.posY += dy;
+        this.posZ += dz;
+        this.prevPosX = this.posX;
+        this.prevPosY = this.posY;
+        this.prevPosZ = this.posZ;
     }
 
     @Override
@@ -69,5 +84,10 @@ public class EntityTransparentCanvas extends EntityCanvas {
     public void readEntityFromNBT(NBTTagCompound tagCompound) {
         super.readEntityFromNBT(tagCompound);
         vulnerable = tagCompound.getBoolean("vulnerable");
+    }
+    
+    @Override
+    public int getBrightnessForRender() {
+        return 0xF000F0; // Full brightness to avoid darkening inside blocks
     }
 }

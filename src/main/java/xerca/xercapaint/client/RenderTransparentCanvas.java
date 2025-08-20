@@ -111,6 +111,8 @@ public class RenderTransparentCanvas extends Render<EntityTransparentCanvas> {
             GlStateManager.enableRescaleNormal();
             float f = 1.0f / 32.0f;
             GlStateManager.scale(f, f, f);
+            GlStateManager.disableLighting();
+            GlStateManager.color(0.8F, 0.8F, 0.8F, 0.85F);
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder bufferbuilder = tessellator.getBuffer();
             GlStateManager.enableBlend();
@@ -130,6 +132,7 @@ public class RenderTransparentCanvas extends Render<EntityTransparentCanvas> {
             bufferbuilder.pos(0.0D, 0.0D, -1.0D).tex(1.0D, 1.0D).endVertex();
             tessellator.draw();
             GlStateManager.disableBlend();
+            GlStateManager.enableLighting();
             GlStateManager.popMatrix();
         }
     }
