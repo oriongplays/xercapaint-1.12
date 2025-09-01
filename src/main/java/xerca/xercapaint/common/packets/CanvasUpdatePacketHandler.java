@@ -14,6 +14,7 @@ import xerca.xercapaint.common.item.ItemCanvas;
 import xerca.xercapaint.common.entity.EntityTransparentCanvas;
 import xerca.xercapaint.common.item.ItemSprayCan;
 import xerca.xercapaint.common.item.Items;
+import xerca.xercapaint.common.packets.SprayCanvasUpdatePacket;
 
 public class CanvasUpdatePacketHandler implements IMessageHandler<CanvasUpdatePacket, IMessage> {
 
@@ -67,15 +68,16 @@ public class CanvasUpdatePacketHandler implements IMessageHandler<CanvasUpdatePa
             XercaPaint.LOGGER.debug("Handling canvas update: Name: " + msg.getName() + " V: " + msg.getVersion());
         }
         else if(!canvas.isEmpty() && canvas.getItem() instanceof ItemSprayCan) {
-            NBTTagCompound comp = null;
+            EntityTransparentCanvas target = null;
             for(EntityTransparentCanvas ent : pl.world.getEntities(EntityTransparentCanvas.class, e -> true)) {
                 NBTTagCompound tag = ent.getCanvasNBT();
                 if(tag != null && msg.getName().equals(tag.getString("name"))) {
-                    comp = tag;
+                    target = ent;
                     break;
                 }
             }
-            if(comp != null) {
+            if(target != null) {
+                NBTTagCompound comp = target.getCanvasNBT();
                 comp.setIntArray("pixels", msg.getPixels());
                 comp.setString("name", msg.getName());
                 comp.setInteger("v", msg.getVersion());
@@ -86,6 +88,7 @@ public class CanvasUpdatePacketHandler implements IMessageHandler<CanvasUpdatePa
                 if(!palette.isEmpty() && (palette.getItem() == Items.ITEM_PALETTE || palette.getItem() == Items.ITEM_SPRAY_PALETTE)) {
                     PaletteUtil.writeCustomColorArrayToNBT(palette.getTagCompound(), msg.getPaletteColors());
                 }
+                XercaPaint.network.sendToAllTracking(new SprayCanvasUpdatePacket(target.getEntityId(), comp), target);
                 XercaPaint.LOGGER.debug("Handling spray canvas update: Name: " + msg.getName() + " V: " + msg.getVersion());
             }
         }

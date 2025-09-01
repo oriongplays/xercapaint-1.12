@@ -40,6 +40,10 @@ public class EntityCanvas extends EntityHanging implements IEntityAdditionalSpaw
         return canvasNBT;
     }
 
+    public void setCanvasNBT(NBTTagCompound canvasNBT) {
+        this.canvasNBT = canvasNBT;
+    }
+
     @Override
     public int getWidthPixels() {
         return CanvasType.getWidth(canvasType);

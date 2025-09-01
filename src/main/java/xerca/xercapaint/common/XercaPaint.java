@@ -16,6 +16,8 @@ import xerca.xercapaint.common.packets.CanvasUpdatePacket;
 import xerca.xercapaint.common.packets.CanvasUpdatePacketHandler;
 import xerca.xercapaint.common.packets.PaletteUpdatePacket;
 import xerca.xercapaint.common.packets.PaletteUpdatePacketHandler;
+import xerca.xercapaint.common.packets.SprayCanvasUpdatePacket;
+import xerca.xercapaint.common.packets.SprayCanvasUpdatePacketHandler;
 
 @Mod(modid = XercaPaint.MODID, name = XercaPaint.NAME)
 public class XercaPaint {
@@ -35,6 +37,7 @@ public class XercaPaint {
         network = NetworkRegistry.INSTANCE.newSimpleChannel("XercaChannel");
         network.registerMessage(CanvasUpdatePacketHandler.class, CanvasUpdatePacket.class, msg_id++, Side.SERVER);
         network.registerMessage(PaletteUpdatePacketHandler.class, PaletteUpdatePacket.class, msg_id++, Side.SERVER);
+        network.registerMessage(SprayCanvasUpdatePacketHandler.class, SprayCanvasUpdatePacket.class, msg_id++, Side.CLIENT);
         proxy.preInit();
     }
 

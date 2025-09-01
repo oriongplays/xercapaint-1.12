@@ -31,6 +31,9 @@ public final class Items {
         initModel(ITEM_CANVAS_LARGE, "item_canvas_large");
         initModel(ITEM_CANVAS_LONG, "item_canvas_long");
         initModel(ITEM_CANVAS_TALL, "item_canvas_tall");
+        initModel(ITEM_SPRAY_PALETTE, "item_spray_palette");
+        initModel(ITEM_SPRAY_CAN, "item_spray_can");
+        initModel(ITEM_SOLVENT, "item_solvent");
     }
 
     private static void initModel(Item item, String location) {
