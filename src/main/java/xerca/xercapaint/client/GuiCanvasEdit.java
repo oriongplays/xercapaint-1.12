@@ -339,6 +339,7 @@ public class GuiCanvasEdit extends BasePalette {
             touchedCanvas = true;
             setPixelsAt(mouseX, mouseY, currentColor, brushSize);
             dirty = true;
+            playPaintSound();
         }
 
         if(inBrushMeter(mouseX, mouseY)){
@@ -365,10 +366,14 @@ public class GuiCanvasEdit extends BasePalette {
             touchedCanvas = true;
             setPixelsAt(mouseX, mouseY, currentColor, brushSize);
             dirty = true;
+            playPaintSound();
         }
         super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
     }
 
+    protected void playPaintSound() {
+    }
+    
     private boolean inCanvas(int x, int y) {
         return x < canvasX + canvasWidth && x >= canvasX && y < canvasY + canvasHeight && y >= canvasY;
     }

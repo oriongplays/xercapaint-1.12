@@ -18,6 +18,11 @@ import xerca.xercapaint.common.packets.PaletteUpdatePacket;
 import xerca.xercapaint.common.packets.PaletteUpdatePacketHandler;
 import xerca.xercapaint.common.packets.SprayCanvasUpdatePacket;
 import xerca.xercapaint.common.packets.SprayCanvasUpdatePacketHandler;
+import xerca.xercapaint.common.packets.SprayCanUsePacket;
+import xerca.xercapaint.common.packets.SprayCanUsePacketHandler;
+import xerca.xercapaint.common.packets.SpraySoundPacket;
+import xerca.xercapaint.common.packets.SpraySoundPacketHandler;
+
 
 @Mod(modid = XercaPaint.MODID, name = XercaPaint.NAME)
 public class XercaPaint {
@@ -38,6 +43,8 @@ public class XercaPaint {
         network.registerMessage(CanvasUpdatePacketHandler.class, CanvasUpdatePacket.class, msg_id++, Side.SERVER);
         network.registerMessage(PaletteUpdatePacketHandler.class, PaletteUpdatePacket.class, msg_id++, Side.SERVER);
         network.registerMessage(SprayCanvasUpdatePacketHandler.class, SprayCanvasUpdatePacket.class, msg_id++, Side.CLIENT);
+        network.registerMessage(SprayCanUsePacketHandler.class, SprayCanUsePacket.class, msg_id++, Side.SERVER);
+        network.registerMessage(SpraySoundPacketHandler.class, SpraySoundPacket.class, msg_id++, Side.SERVER);
         proxy.preInit();
     }
 

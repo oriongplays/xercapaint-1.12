@@ -1,5 +1,6 @@
 package xerca.xercapaint.common.item;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,6 +13,7 @@ import net.minecraft.world.World;
 import xerca.xercapaint.common.CanvasType;
 import xerca.xercapaint.common.XercaPaint;
 import xerca.xercapaint.common.entity.EntityTransparentCanvas;
+import xerca.xercapaint.common.packets.SpraySoundPacket;
 
 public class ItemSprayCan extends Item {
     ItemSprayCan(String name) {
@@ -25,6 +27,11 @@ public class ItemSprayCan extends Item {
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing,
                                       float hitX, float hitY, float hitZ) {
         ItemStack stack = player.getHeldItem(hand);
+        NBTTagCompound tagUses = stack.getTagCompound();
+        int uses = tagUses != null && tagUses.hasKey("uses") ? tagUses.getInteger("uses") : 3;
+        if (uses <= 0) {
+            return EnumActionResult.FAIL;
+        }
         BlockPos placePos = pos.offset(facing);
         if (facing != EnumFacing.DOWN && facing != EnumFacing.UP && player.canPlayerEdit(placePos, facing, stack)) {
             NBTTagCompound tag = new NBTTagCompound();
@@ -46,5 +53,13 @@ public class ItemSprayCan extends Item {
             }
         }
         return EnumActionResult.FAIL;
+    }
+    
+    @Override
+    public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {
+        if (entityLiving.world.isRemote) {
+            XercaPaint.network.sendToServer(new SpraySoundPacket(SpraySoundPacket.SoundType.SHAKE));
+        }
+        return super.onEntitySwing(entityLiving, stack);
     }
 }

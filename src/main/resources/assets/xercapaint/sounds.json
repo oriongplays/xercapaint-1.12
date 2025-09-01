@@ -1,0 +1,14 @@
+{
+  "spray": {
+    "category": "player",
+    "sounds": [
+      { "name": "xercapaint:spray", "stream": false }
+    ]
+  },
+  "sprayshake": {
+    "category": "player",
+    "sounds": [
+      { "name": "xercapaint:sprayshake", "stream": false }
+    ]
+  }
+}
