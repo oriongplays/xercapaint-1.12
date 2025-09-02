@@ -42,7 +42,11 @@ public class XercaPaint {
         network = NetworkRegistry.INSTANCE.newSimpleChannel("XercaChannel");
         network.registerMessage(CanvasUpdatePacketHandler.class, CanvasUpdatePacket.class, msg_id++, Side.SERVER);
         network.registerMessage(PaletteUpdatePacketHandler.class, PaletteUpdatePacket.class, msg_id++, Side.SERVER);
-        network.registerMessage(SprayCanvasUpdatePacketHandler.class, SprayCanvasUpdatePacket.class, msg_id++, Side.CLIENT);
+        if (event.getSide().isClient()) {
+            network.registerMessage(SprayCanvasUpdatePacketHandler.class, SprayCanvasUpdatePacket.class, msg_id++, Side.CLIENT);
+        } else {
+            network.registerMessage((message, ctx) -> null, SprayCanvasUpdatePacket.class, msg_id++, Side.CLIENT);
+        }
         network.registerMessage(SprayCanUsePacketHandler.class, SprayCanUsePacket.class, msg_id++, Side.SERVER);
         network.registerMessage(SpraySoundPacketHandler.class, SpraySoundPacket.class, msg_id++, Side.SERVER);
         proxy.preInit();
