@@ -1,0 +1,16 @@
+itemGroup.paint_tab=Pintura
+
+item.item_palette.name=Paleta
+item.item_canvas.name=Tela
+item.item_canvas_large.name=Tela Grande
+item.item_canvas_long.name=Tela Comprida
+item.item_canvas_tall.name=Tela Alta
+item.item_spray_can.name=Lata de Spray
+item.item_spray_palette.name=Paleta de Spray
+item.item_solvent.name=Solvente
+
+palette.basic_count=%1$s cores básicas
+palette.custom_count=%1$s cores personalizadas
+palette.empty=Paleta vazia
+
+spray_can.uses=%1$s utilizações restantes

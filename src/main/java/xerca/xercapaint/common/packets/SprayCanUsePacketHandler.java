@@ -2,7 +2,6 @@ package xerca.xercapaint.common.packets;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IThreadListener;
 import net.minecraft.world.WorldServer;
@@ -35,17 +34,9 @@ public class SprayCanUsePacketHandler implements IMessageHandler<SprayCanUsePack
         }
 
         if (!stack.isEmpty()) {
-            NBTTagCompound tag = stack.getTagCompound();
-            if (tag == null) {
-                tag = new NBTTagCompound();
-                stack.setTagCompound(tag);
-            }
-            int uses = tag.hasKey("uses") ? tag.getInteger("uses") : 3;
-            uses--;
-            if (uses <= 0) {
+            stack.damageItem(1, player);
+            if (stack.getCount() <= 0) {
                 player.setHeldItem(hand, ItemStack.EMPTY);
-            } else {
-                tag.setInteger("uses", uses);
             }
         }
     }

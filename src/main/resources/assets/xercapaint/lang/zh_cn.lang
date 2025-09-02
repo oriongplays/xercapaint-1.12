@@ -5,7 +5,12 @@ item.item_canvas.name=画布
 item.item_canvas_large.name=画布（大）
 item.item_canvas_long.name=画面（横向）
 item.item_canvas_tall.name=画布（竖向）
+item.item_spray_can.name=喷漆罐
+item.item_spray_palette.name=喷漆调色板
+item.item_solvent.name=溶剂
 
 palette.basic_count=%1$s 基本色
 palette.custom_count=%1$s 自定义颜色
 palette.empty=空调色板
+
+spray_can.uses=剩余 %1$s 次使用

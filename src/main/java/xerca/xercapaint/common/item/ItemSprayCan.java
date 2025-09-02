@@ -10,6 +10,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
+import java.util.List;
 import xerca.xercapaint.common.CanvasType;
 import xerca.xercapaint.common.XercaPaint;
 import xerca.xercapaint.common.entity.EntityTransparentCanvas;
@@ -21,15 +29,14 @@ public class ItemSprayCan extends Item {
         this.setUnlocalizedName(name);
         this.setCreativeTab(Items.paintTab);
         this.setMaxStackSize(1);
+        this.setMaxDamage(3);
     }
 
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing,
                                       float hitX, float hitY, float hitZ) {
         ItemStack stack = player.getHeldItem(hand);
-        NBTTagCompound tagUses = stack.getTagCompound();
-        int uses = tagUses != null && tagUses.hasKey("uses") ? tagUses.getInteger("uses") : 3;
-        if (uses <= 0) {
+        if (stack.getItemDamage() >= stack.getMaxDamage()) {
             return EnumActionResult.FAIL;
         }
         BlockPos placePos = pos.offset(facing);
@@ -61,5 +68,12 @@ public class ItemSprayCan extends Item {
             XercaPaint.network.sendToServer(new SpraySoundPacket(SpraySoundPacket.SoundType.SHAKE));
         }
         return super.onEntitySwing(entityLiving, stack);
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        int remaining = stack.getMaxDamage() - stack.getItemDamage();
+        tooltip.add(TextFormatting.GRAY + I18n.translateToLocalFormatted("spray_can.uses", String.valueOf(remaining)));
     }
 }
