@@ -88,7 +88,9 @@ public class CanvasUpdatePacketHandler implements IMessageHandler<CanvasUpdatePa
                 if(!palette.isEmpty() && (palette.getItem() == Items.ITEM_PALETTE || palette.getItem() == Items.ITEM_SPRAY_PALETTE)) {
                     PaletteUtil.writeCustomColorArrayToNBT(palette.getTagCompound(), msg.getPaletteColors());
                 }
-                XercaPaint.network.sendToAllTracking(new SprayCanvasUpdatePacket(target.getEntityId(), comp), target);
+                SprayCanvasUpdatePacket packet = new SprayCanvasUpdatePacket(target.getEntityId(), comp);
+                XercaPaint.network.sendToAllTracking(packet, target);
+                XercaPaint.network.sendTo(packet, pl);
                 XercaPaint.LOGGER.debug("Handling spray canvas update: Name: " + msg.getName() + " V: " + msg.getVersion());
             }
         }
