@@ -2,6 +2,7 @@ package xerca.xercapaint.server;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import xerca.xercapaint.common.Proxy;
 
 public class ServerProxy extends Proxy {
@@ -22,7 +23,7 @@ public class ServerProxy extends Proxy {
     }
 
     @Override
-    public void showSprayGui(EntityPlayer player, NBTTagCompound canvasTag, NBTTagCompound paletteTag) {
+    public void showSprayGui(EntityPlayer player, NBTTagCompound canvasTag, NBTTagCompound paletteTag, BlockPos pos) {
 
     }
 

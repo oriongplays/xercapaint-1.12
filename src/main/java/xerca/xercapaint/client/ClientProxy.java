@@ -4,6 +4,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.RenderItemInFrameEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -29,6 +32,12 @@ public class ClientProxy extends Proxy {
     }
 
     public void showCanvasGui(EntityPlayer player){
+        if(!player.canPlayerEdit(player.getPosition().down(), EnumFacing.UP, player.getHeldItemMainhand())){
+            return;
+        }
+        if(!player.canPlayerEdit(player.getPosition().down(), EnumFacing.UP, player.getHeldItemMainhand())){
+            return;
+        }
         final ItemStack heldItem = player.getHeldItemMainhand();
         final ItemStack offhandItem = player.getHeldItemOffhand();
 
@@ -73,8 +82,14 @@ public class ClientProxy extends Proxy {
     }
     
     @Override
-    public void showSprayGui(EntityPlayer player, NBTTagCompound canvasTag, NBTTagCompound paletteTag) {
+    public void showSprayGui(EntityPlayer player, NBTTagCompound canvasTag, NBTTagCompound paletteTag, BlockPos pos) {
+        if(!player.canPlayerEdit(pos, EnumFacing.UP, player.getHeldItemMainhand())){
+            return;
+        }
         Minecraft minecraft = Minecraft.getMinecraft();
+                if(!player.canPlayerEdit(player.getPosition().down(), EnumFacing.UP, player.getHeldItemMainhand())){
+            return;
+        }
         minecraft.displayGuiScreen(new GuiSprayCanvasEdit(minecraft.player, canvasTag, paletteTag,
                 new TextComponentTranslation("item.item_canvas.name"), CanvasType.SMALL));
     }

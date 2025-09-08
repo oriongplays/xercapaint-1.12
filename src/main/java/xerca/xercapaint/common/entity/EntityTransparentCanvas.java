@@ -1,14 +1,19 @@
 package xerca.xercapaint.common.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import xerca.xercapaint.common.CanvasType;
 import xerca.xercapaint.common.XercaPaint;
 import xerca.xercapaint.common.item.Items;
@@ -47,6 +52,24 @@ public class EntityTransparentCanvas extends EntityCanvas {
 
     @Override
     public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
+        if (!world.isRemote) {
+            if (MinecraftForge.EVENT_BUS.post(new AttackEntityEvent(player, this))) {
+                return true;
+            }
+            BlockPos attach = this.getHangingPosition().offset(this.getHorizontalFacing().getOpposite());
+            ItemStack original = player.getHeldItem(hand);
+            player.setHeldItem(hand, new ItemStack(net.minecraft.init.Items.ITEM_FRAME));
+            EnumActionResult res = net.minecraft.init.Items.ITEM_FRAME.onItemUse(player, world, attach, hand, this.getHorizontalFacing(), 0.5F, 0.5F, 0.5F);
+            player.setHeldItem(hand, original);
+            if (res != EnumActionResult.SUCCESS) {
+                return true;
+            }
+            for (EntityItemFrame frame : world.getEntitiesWithinAABB(EntityItemFrame.class, new AxisAlignedBB(this.getHangingPosition()))) {
+                if (frame.getHangingPosition().equals(this.getHangingPosition()) && frame.getHorizontalFacing() == this.getHorizontalFacing()) {
+                    frame.setDead();
+                }
+            }
+        }
         ItemStack main = player.getHeldItem(hand);
         ItemStack off = player.getHeldItemOffhand();
         if (main.getItem() == Items.ITEM_SOLVENT) {
@@ -59,7 +82,7 @@ public class EntityTransparentCanvas extends EntityCanvas {
         if (main.getItem() == Items.ITEM_SPRAY_CAN && off.getItem() == Items.ITEM_SPRAY_PALETTE) {
             if (world.isRemote) {
                 NBTTagCompound palette = off.getTagCompound();
-                XercaPaint.proxy.showSprayGui(player, this.getCanvasNBT(), palette);
+                XercaPaint.proxy.showSprayGui(player, this.getCanvasNBT(), palette, this.getHangingPosition());
             }
             return true;
         }

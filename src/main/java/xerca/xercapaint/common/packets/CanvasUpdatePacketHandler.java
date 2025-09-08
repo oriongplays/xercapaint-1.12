@@ -3,8 +3,14 @@ package xerca.xercapaint.common.packets;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.IThreadListener;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -77,6 +83,22 @@ public class CanvasUpdatePacketHandler implements IMessageHandler<CanvasUpdatePa
                 }
             }
             if(target != null) {
+                if (MinecraftForge.EVENT_BUS.post(new AttackEntityEvent(pl, target))) {
+                    return;
+                }
+                BlockPos attach = target.getHangingPosition().offset(target.getHorizontalFacing().getOpposite());
+                ItemStack original = pl.getHeldItem(EnumHand.MAIN_HAND);
+                pl.setHeldItem(EnumHand.MAIN_HAND, new ItemStack(net.minecraft.init.Items.ITEM_FRAME));
+                EnumActionResult res = net.minecraft.init.Items.ITEM_FRAME.onItemUse(pl, pl.world, attach, EnumHand.MAIN_HAND, target.getHorizontalFacing(), 0.5F, 0.5F, 0.5F);
+                pl.setHeldItem(EnumHand.MAIN_HAND, original);
+                if (res != EnumActionResult.SUCCESS) {
+                    return;
+                }
+                for (net.minecraft.entity.item.EntityItemFrame frame : pl.world.getEntitiesWithinAABB(net.minecraft.entity.item.EntityItemFrame.class, new AxisAlignedBB(target.getHangingPosition()))) {
+                    if (frame.getHangingPosition().equals(target.getHangingPosition()) && frame.getHorizontalFacing() == target.getHorizontalFacing()) {
+                        frame.setDead();
+                    }
+                }
                 NBTTagCompound comp = target.getCanvasNBT();
                 comp.setIntArray("pixels", msg.getPixels());
                 comp.setString("name", msg.getName());
